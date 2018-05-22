@@ -14,11 +14,11 @@ class Neuralnet(Chain):
 
     def __init__(self, n_in, n_out):
         super(Neuralnet, self).__init__(
-            L1 = L.Linear(n_in, 30),
-            L2 = L.Linear(30, 30),
-            L3 = L.Linear(30, 30),
-            L4 = L.Linear(30, 30),
-            Q_value = L.Linear(30, n_out, initialW=np.zeros((n_out, 30), dtype=np.float32))
+            L1 = L.Linear(n_in, 100),
+            L2 = L.Linear(100, 100),
+            L3 = L.Linear(100, 100),
+            L4 = L.Linear(100, 100),
+            Q_value = L.Linear(100, n_out, initialW=np.zeros((n_out, 100), dtype=np.float32))
         )
 
     def Q_func(self, x):
@@ -42,11 +42,11 @@ class Agent():
         self.memory = deque()
         self.loss = 0
         self.step = 0
-        self.gamma = 0.99    # 割引率
-        self.mem_size = 10 # 経験メモリのサイズ 
-        self.batch_size = 1 # バッチのサイズ
+        self.gamma = 0.8    # 割引率
+        self.mem_size = 100 # 経験メモリのサイズ 
+        self.batch_size = 10 # バッチのサイズ
         self.epsilon = 1
-        self.epsilon_decay = 0.005
+        self.epsilon_decay = 0.0005
         self.epsilon_min = 0
         self.exploration = 1000
         self.train_freq = 10

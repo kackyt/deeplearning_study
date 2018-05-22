@@ -5,24 +5,24 @@ import gym, sys
 import numpy as np
 
 from agent import Agent
-from card_environment import CardEnvironment
+from knapsack import KnapsackEnvironment as Environment
 
 def main(load=False, seed=0):
 
-    env = CardEnvironment()
+    env = Environment()
 
-    n_st = 6
-    n_act = 3
+    n_st = 61
+    n_act = 20
 
     agent = Agent(n_st, n_act, seed)
     if load:
-        agent.load_model(model_path)
+        agent.load_model('./')
 
     for i_episode in range(20000):
         observation = env.reset()
         r_sum = 0
         q_list = []
-        for t in range(10):
+        for t in range(n_act):
             state = np.array(observation).astype(np.float32).reshape((1,n_st))
             act_i, q = agent.get_action(state)
             q_list.append(q)
@@ -35,7 +35,9 @@ def main(load=False, seed=0):
             if ep_end:
                 break
         print("\t".join(map(str,[i_episode, r_sum, agent.epsilon, agent.loss, sum(q_list)/float(t+1) ,agent.step])))
-        agent.save_model('.')
+        print("----state ----")
+        print(env.get_state())
+        agent.save_model('./')
 
 if __name__=="__main__":
     main()
