@@ -5,11 +5,11 @@ import gym, sys
 import numpy as np
 
 from agent import Agent
-from knapsack import KnapsackEnvironment as Environment
+from knapsack import KnapsackEnvironment
 
 def main(load=False, seed=0):
 
-    env = Environment()
+    env = KnapsackEnvironment()
 
     n_st = 61
     n_act = 20
@@ -21,22 +21,28 @@ def main(load=False, seed=0):
     for i_episode in range(20000):
         observation = env.reset()
         r_sum = 0
-        q_list = []
-        for t in range(n_act):
+        for t in range(2000):
             state = np.array(observation).astype(np.float32).reshape((1,n_st))
-            act_i, q = agent.get_action(state)
-            q_list.append(q)
-            action = act_i
+            action = agent.get_action_and_train(state, r_sum)
             observation, reward, ep_end = env.step(action)
-            state_dash = np.array(observation).astype(np.float32).reshape((1,n_st))
-            agent.stock_experience(state, act_i, reward, state_dash, ep_end)
-            agent.train()
             r_sum += reward
             if ep_end:
+                agent.stop_episode_and_train(state, r_sum)
                 break
-        print("\t".join(map(str,[i_episode, r_sum, agent.epsilon, agent.loss, sum(q_list)/float(t+1) ,agent.step])))
+        print('episode:', i_episode,
+              'R:', r_sum,
+              'statistics:', agent.get_statistics())
         print("----state ----")
-        print(env.get_state())
+        state = env.get_state()
+        for s in state[1:20]:
+            print('{0:>.3f} '.format(s), end="")
+        print()
+        for s in state[21:40]:
+            print('{0:>.3f} '.format(s), end="")
+        print()
+        for s in state[41:60]:
+            print('{0:>5} '.format(s), end="")
+        print()
         agent.save_model('./')
 
 if __name__=="__main__":
