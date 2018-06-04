@@ -4,15 +4,17 @@
 import gym, sys
 import numpy as np
 
-from agent import Agent
+from agent_keras import Agent
 from knapsack import KnapsackEnvironment
+from card_environment import CardEnvironment
 
 def main(load=False, seed=0):
 
-    env = KnapsackEnvironment()
+    # env = KnapsackEnvironment()
+    env = CardEnvironment()
 
-    n_st = 61
-    n_act = 20
+    n_st = len(env.get_state())
+    n_act = env.get_num_actions()
 
     agent = Agent(n_st, n_act, seed)
     if load:

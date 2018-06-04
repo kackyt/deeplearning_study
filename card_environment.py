@@ -19,7 +19,10 @@ class CardEnvironment():
         self.state[5] += 1
         reward = winlose[self.state[num]][action]
         print("num: %d action: %d reward: %d" % (num, action, reward))
-        return self.state, reward, num == 4
+        return self.state, reward, num == 4, {}
+
+    def get_num_actions(self):
+        return 3
 
     def get_state(self):
         return self.state

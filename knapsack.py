@@ -32,12 +32,15 @@ class KnapsackEnvironment():
     def get_cost(self):
         return sum([self.selected[i] * self.costs[i] for i in range(len(self.selected))])
 
+    def get_num_actions(self):
+        return len(self.costs)
+
     def step(self, action):
         self.selected[action] += 1
         if self.totalcost < self.get_cost():
             self.selected[action] -= 1
-            return self.get_state(), self.get_reward(), True
-        return self.get_state(), 0, False
+            return self.get_state(), self.get_reward(), True, {}
+        return self.get_state(), 0, False, {}
 
     def get_state(self):
         x = []
