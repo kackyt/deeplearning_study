@@ -1,14 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import gym, sys
+import sys
 import numpy as np
 
-from agent_keras import Agent
+from agent import Agent
 from knapsack import KnapsackEnvironment
 from card_environment import CardEnvironment
 
 def main(load=False, seed=0):
+    file = open("result.csv", "a")
 
     # env = KnapsackEnvironment()
     env = CardEnvironment()
@@ -46,6 +47,8 @@ def main(load=False, seed=0):
             print('{0:>5} '.format(s), end="")
         print()
         agent.save_model('./')
+        file.write(f'{r_sum},');
+    file.close()
 
 if __name__=="__main__":
     main()

@@ -44,7 +44,7 @@ class Agent():
         # Chainer only accepts numpy.float32 by default, specify
         # a converter as a feature extractor function phi.
         phi = lambda x: x.astype(np.float32, copy=False)
-        self.agent = chainerrl.agents.DoubleDQN(self.model, self.optimizer, 
+        self.agent = chainerrl.agents.DQN(self.model, self.optimizer, 
                                                 self.replay_buffer, self.gamma, self.explorer, 
                                                 replay_start_size = 500, update_interval = 1,
                                                target_update_interval = self.target_update_freq, phi = phi)
